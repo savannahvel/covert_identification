@@ -68,16 +68,24 @@ function includeSpecialCharacters() {
 }
 
 function lengthPrompt() {
-  var length = Number(prompt("How many characters do you want to generate? Minimum 8 characters, maximum 128."));
+  var length = prompt("How many characters do you want to generate? Minimum 8 characters, maximum 128.");
+  let passwordLength;
 
-  if (length < 8) {
+  if (length == null) {
+    return null;
+  } else {
+    passwordLength = Number(length);
+  }
+
+  if (passwordLength < 8) {
     window.alert("That length is too short. Minimum length is 8. Please try again.");
     lengthPrompt();
-  } else if (length > 128) {
+  } else if (passwordLength > 128) {
     window.alert("That length is too long. Maximum length is 128. Please try again.");
     lengthPrompt();
   }
-  return length;
+
+  return passwordLength;
 }
 
 function generateCharacters(characters) {
