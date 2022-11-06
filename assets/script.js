@@ -1,14 +1,8 @@
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 
-let promptCount = 0;
-
 function checkYesOrNo(prompt) {
   let cleanedPrompt = prompt.toUpperCase();
-
-  if (cleanedPrompt === "Y") {
-    promptCount ++
-  }
 
   if (cleanedPrompt === "Y" || cleanedPrompt === "N") { 
     return cleanedPrompt;
@@ -19,10 +13,6 @@ function checkYesOrNo(prompt) {
 
 function includeCapitals() {
   let capital = prompt("Would you like to include capital letters? Y/N");
-
-  if (capital === "Y") {
-    promptCount ++
-  }
 
   if (!(capital == "Y" || capital == "N")) { 
     let cleanedCapital = checkYesOrNo(capital)
@@ -38,10 +28,6 @@ function includeCapitals() {
 function includeLowerCase() {
   let lowerCase = prompt("Would you like to include lower case letters? Y/N");
 
-  if (lowerCase === "Y") {
-    promptCount ++
-  }
-
   if (!(lowerCase == "Y" || lowerCase == "N")) { 
     let cleanedLowerCase = checkYesOrNo(lowerCase)
     if (!cleanedLowerCase) {
@@ -49,16 +35,12 @@ function includeLowerCase() {
     }
     return cleanedLowerCase;
   }
-  promptCount ++
+
   return lowerCase;
 }
 
 function includeNumbers() {
   let numbers = prompt("Would you like to include numbers letters? Y/N");
-
-  if (numbers === "Y") {
-    promptCount ++
-  }
 
   if (!(numbers == "Y" || numbers == "N")) { 
     let cleanedNumbers = checkYesOrNo(numbers)
@@ -67,16 +49,12 @@ function includeNumbers() {
     }
     return cleanedNumbers;
   }
-  promptCount ++
+
   return numbers;
 }
 
 function includeSpecialCharacters() {
   let specialCharacters = prompt("Would you like to include special characters? Y/N");
-
-  if (specialCharacters === "Y") {
-    promptCount ++
-  }
 
   if (!(specialCharacters == "Y" || specialCharacters == "N")) { 
     let cleanedSpecialCharacters = checkYesOrNo(specialCharacters)
@@ -85,7 +63,7 @@ function includeSpecialCharacters() {
     }
     return cleanedSpecialCharacters;
   }
-  promptCount ++
+
   return specialCharacters;
 }
 
@@ -102,35 +80,9 @@ function lengthPrompt() {
   return length;
 }
 
-function generateCharacters(passwordLength, numOfPrompts, characters) {
-  characterString = '';
-
-  if (numOfPrompts == 1) {
-    for (let i = 0; i < passwordLength; i++) { 
-      let randomChar = Math.floor(Math.random() * characters.length);
-      characterString += characters[randomChar];
-    }
-
-    return {
-      charString: characterString
-    }
-  } 
-
-  percentage = Math.floor(passwordLength / numOfPrompts); 
-  let totalReplacedChars = Math.floor(Math.random() * percentage) + 1;
-  
-  for (let i = 0; i < totalReplacedChars; i++) { 
-    let randomChar = Math.floor(Math.random() * characters.length);
-    characterString += characters[randomChar];
-  }
-
-  //subtract from promptCount
-  promptCount -= 1;
-  
-  return {
-    charString: characterString,
-    charCount: totalReplacedChars
-  };
+function generateCharacters(characters) {
+  let randomChar = Math.floor(Math.random() * characters.length);
+  return characters[randomChar];
 }
 
 function generatePassword() {
@@ -140,47 +92,39 @@ function generatePassword() {
   let lowerCase = includeLowerCase();
   let numbers = includeNumbers();
   let specialCharacters = includeSpecialCharacters();
-
   
   let lowerAlphabet = 'abcdefghijklmnopqrstuvwxyz';
   let upperCaseAlphabet = lowerAlphabet.toUpperCase();
   let numberValue = '123456789';
   let specialCharList = '!"#$%&()*+,-./:;<=>?@[]^_`{|}~'
 
-  
-  
-  if (capitals === "Y") {
-    let capitalCharacters = generateCharacters(length, promptCount, upperCaseAlphabet)
-    
-    password += capitalCharacters.charString;
-    length -= capitalCharacters.charCount;
-  }
+  for (let i = 0; i < length; i++) {
+    let emptyString = '';
+    if (capitals === "Y") {
+      let capitalCharacters = generateCharacters(upperCaseAlphabet)
+      emptyString += capitalCharacters;
+    }
 
-  if (lowerCase === "Y") {
-    let lowerCaseCharacters = generateCharacters(length, promptCount, lowerAlphabet)
+    if (lowerCase === "Y") {
+      let lowerCaseCharacters = generateCharacters(lowerAlphabet)
+      emptyString += lowerCaseCharacters;
+    }
     
-    password += lowerCaseCharacters.charString;
-    length -= lowerCaseCharacters.charCount;
+    if (numbers === "Y") {
+      let numberCharacters = generateCharacters(numberValue)
+      emptyString += numberCharacters;
+    }
+    
+    if (specialCharacters === "Y") {
+      let specialChar = generateCharacters(specialCharList)
+      emptyString += specialChar;
+    } 
+    console.log(emptyString);
+    let randomChar = Math.floor(Math.random() * emptyString.length)
+    password += emptyString[randomChar];
   }
-  
-  if (numbers === "Y") {
-    let numberCharacters = generateCharacters(length, promptCount, numberValue)
-    password += numberCharacters.charString;
-    length -= numberCharacters.charCount;
-  }
-  
-  if (specialCharacters === "Y") {
-    let specialChar = generateCharacters(length, promptCount, specialCharList)
-    password += specialChar.charString;
-    length -= specialChar.charCount;
-  } 
-  
-  
-  // clear prompt when done so user can regenerate w/o refreshing page
-  promptCount = 0;
 
   return password;
-
 }
 
 // Write password to the #password input
