@@ -103,20 +103,14 @@ function lengthPrompt() {
 }
 
 function generateCharacters(passwordLength, numOfPrompts, characters) {
-  console.log("numOfPrompts: ", numOfPrompts);
-  console.log("Password length: ", passwordLength);
-  // console.log(characters)
-  
   characterString = '';
 
   if (numOfPrompts == 1) {
     for (let i = 0; i < passwordLength; i++) { 
-      // console.log(characters)
       let randomChar = Math.floor(Math.random() * characters.length);
       characterString += characters[randomChar];
-      // console.log(characters[randomChar])
     }
-    console.log(characterString)
+
     return {
       charString: characterString
     }
@@ -143,9 +137,9 @@ function generatePassword() {
   let password = '';
   let length = lengthPrompt();
   let capitals = includeCapitals();
-  // let lowerCase = includeLowerCase();
-  // let numbers = includeNumbers();
-  // let specialCharacters = includeSpecialCharacters();
+  let lowerCase = includeLowerCase();
+  let numbers = includeNumbers();
+  let specialCharacters = includeSpecialCharacters();
 
   
   let lowerAlphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -157,58 +151,33 @@ function generatePassword() {
   
   if (capitals === "Y") {
     let capitalCharacters = generateCharacters(length, promptCount, upperCaseAlphabet)
-    let addToPassword = capitalCharacters.charString;
-    let newTotalChars = capitalCharacters.charCount;
     
-    // console.log("Length: " + length);
-    // // console.log("characters length: " + addToPassword.length);
-    // console.log("Password before set: " + password)
-    
-    password += addToPassword;
-    // console.log("Password after set: " + password)
-
-    length -= newTotalChars;
-    // console.log("New Password Length: " + length)
+    password += capitalCharacters.charString;
+    length -= capitalCharacters.charCount;
   }
 
-  // if (lowerCase === "Y") {
-  //   console.log("in lower case block")
-  //   let lowerCaseCharacters = generateCharacters(length, promptCount, lowerAlphabet)
-  //   let addToPassword = lowerCaseCharacters.charString;
-  //   let newTotalChars = lowerCaseCharacters.charCount;
+  if (lowerCase === "Y") {
+    let lowerCaseCharacters = generateCharacters(length, promptCount, lowerAlphabet)
     
-  //   console.log("Length: " + length);
-  //   console.log("characters length: " + addToPassword.length);
-  //   console.log("Password before set: " + password)
-    
-  //   password += addToPassword;
-  //   console.log("Password after set: " + password)
-
-  //   length -= newTotalChars;
-  //   console.log("New Password Length: " + length)
-    
-  //   password += addToPassword;
-  //   length -= newTotalChars;
-  // }
+    password += lowerCaseCharacters.charString;
+    length -= lowerCaseCharacters.charCount;
+  }
   
-  // if (numbers === "Y") {
-  //   let numberCharacters = generateCharacters(length, promptCount, numberValue)
-  //   password += numberCharacters;
-  //   console.log("password length in numbers: " + password.length)
-  //   length -= password.length;
-  //   console.log("PW length in numbers: " + length);
-  // }
+  if (numbers === "Y") {
+    let numberCharacters = generateCharacters(length, promptCount, numberValue)
+    password += numberCharacters.charString;
+    length -= numberCharacters.charCount;
+  }
   
-  // if (specialCharacters === "Y") {
-  //   let specialChar = generateCharacters(length, promptCount, specialCharList)
-  //   password += specialChar;
-  //   length -= password.length;
-  // } 
+  if (specialCharacters === "Y") {
+    let specialChar = generateCharacters(length, promptCount, specialCharList)
+    password += specialChar.charString;
+    length -= specialChar.charCount;
+  } 
   
   
   // clear prompt when done so user can regenerate w/o refreshing page
   promptCount = 0;
-  // return password;
 
   return password;
 
