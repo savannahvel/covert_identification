@@ -107,29 +107,29 @@ function generatePassword() {
   let specialCharList = '!"#$%&()*+,-./:;<=>?@[]^_`{|}~'
 
   for (let i = 0; i < length; i++) {
-    let emptyString = '';
+    let randCharPlaceholder = '';
     if (capitals === "Y") {
       let capitalCharacters = generateCharacters(upperCaseAlphabet)
-      emptyString += capitalCharacters;
+      randCharPlaceholder += capitalCharacters;
     }
 
     if (lowerCase === "Y") {
       let lowerCaseCharacters = generateCharacters(lowerAlphabet)
-      emptyString += lowerCaseCharacters;
+      randCharPlaceholder += lowerCaseCharacters;
     }
     
     if (numbers === "Y") {
       let numberCharacters = generateCharacters(numberValue)
-      emptyString += numberCharacters;
+      randCharPlaceholder += numberCharacters;
     }
     
     if (specialCharacters === "Y") {
       let specialChar = generateCharacters(specialCharList)
-      emptyString += specialChar;
+      randCharPlaceholder += specialChar;
     } 
-    console.log(emptyString);
-    let randomChar = Math.floor(Math.random() * emptyString.length)
-    password += emptyString[randomChar];
+    
+    let randomChar = Math.floor(Math.random() * randCharPlaceholder.length)
+    password += randCharPlaceholder[randomChar];
   }
 
   return password;
